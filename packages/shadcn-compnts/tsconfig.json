@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "paths": {
+      // @repo/shadcn-compnts 为项目名，即package.json的name属性
+      // （如果想把shadcn抽离一个单独的仓库这么指定，如果直接集成到web项目中使用则直接 "@": ["./src/*"] 即可）
+      "@repo/shadcn-compnts/*": ["./src/*"]
+    }
+  }
+}
