@@ -12,4 +12,4 @@ pnpm dlx create-turbo@latest -e with-vite-react
 步骤整合到了这里 [react-router7.9.4使用](https://www.cnblogs.com/dingshaohua/p/19167593)
 
 
-项目集成tailwind和shadcn，
+项目集成tailwind和shadcn，这里我也整合到了这里 [monorepo抽离shadcn和tailwind](https://www.cnblogs.com/dingshaohua/p/19196263)

@@ -1,4 +1,5 @@
 {
+  "npm.exclude": ["**/packages/**"],
   "eslint.workingDirectories": [
     {
       "mode": "auto"

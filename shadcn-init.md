@@ -2,10 +2,10 @@
 如果你要集成的项目不是nextjs或者vite等，则不能使用`pnpm dlx shadcn init`一步到位的集成方式！
 
 
-比如你想把涉及到shadcn的相关的都单独的放到一个项目中， 假设的项目叫做 `shadcn-compnts`，是Monorepo（或者Turborepo）中的一个子包 其包名为 `@repo/shadcn-compnts`。我们使用`pnpm init`来初始化它！
+比如你想把涉及到shadcn的相关的都单独的放到一个项目中， 假设的项目叫做 `shadcn-comps`，是Monorepo（或者Turborepo）中的一个子包 其包名为 `@repo/shadcn-comps`。我们使用`pnpm init`来初始化它！
 ```json
 {
-  "name": "@repo/shadcn-compnts",
+  "name": "@repo/shadcn-comps",
   "version": "1.0.0",
   "description": "",
   "scripts": {},
@@ -28,15 +28,15 @@ pnpm add tailwindcss
 
 ### 配置tsconfig.json
 紧接着项目要有 `tsconfig.json`，因为后边安装shadcn组件的时候依赖ts里的paths配置，
-如果没有这个，shadcn组件的安装会直接参考components中aliases给你下载到@repo>shadcn-compnts>components， 而不是根据短链接解析真实路径到src下（如果听不明白，你操作下就知道了）
+如果没有这个，shadcn组件的安装会直接参考components中aliases给你下载到@repo>shadcn-comps>components， 而不是根据短链接解析真实路径到src下（如果听不明白，你操作下就知道了）
 ```JSON
 {
   "compilerOptions": {
     "jsx": "react",
     "paths": {
-      // @repo/shadcn-compnts 为项目名，即package.json的name属性
+      // @repo/shadcn-comps 为项目名，即package.json的name属性
       // （如果想把shadcn抽离一个单独的仓库这么指定，如果直接集成到web项目中使用则直接 "@": ["./src/*"] 即可）
-      "@repo/shadcn-compnts/*": ["./src/*"]
+      "@repo/shadcn-comps/*": ["./src/*"]
     }
   }
 }
@@ -60,11 +60,11 @@ pnpm add tailwindcss
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@repo/shadcn-compnts/components",
-    "utils": "@repo/shadcn-compnts/lib/utils",
-    "ui": "@repo/shadcn-compnts/components",
-    "lib": "@repo/shadcn-compnts/lib",
-    "hooks": "@repo/shadcn-compnts/hooks"
+    "components": "@repo/shadcn-comps/components",
+    "utils": "@repo/shadcn-comps/lib/utils",
+    "ui": "@repo/shadcn-comps/components",
+    "lib": "@repo/shadcn-comps/lib",
+    "hooks": "@repo/shadcn-comps/hooks"
   },
   "registries": {}
 }
@@ -89,7 +89,7 @@ pnpm add --D @types/react
 ```
 
 ### 安装shadcn组件
-来吧，我们在 `shadcn-compnts`这个子包中尝试使用shadcn安装一个组件
+来吧，我们在 `shadcn-comps`这个子包中尝试使用shadcn安装一个组件
 ```sh
 pnpm dlx shadcn add button
 ```
