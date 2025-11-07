@@ -11,7 +11,9 @@ export const router = createHashRouter([
   {
     path: '/',
     Component: Layout,
-    children: [{ index: true, Component: lazy(() => import('@/pages/welcome')) }],
+    children: [
+      { index: true, Component: lazy(() => import('@/pages/welcome')) },
+    ],
   },
 ]);
 
