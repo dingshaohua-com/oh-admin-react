@@ -1,5 +1,5 @@
-import typescriptLogo from "/typescript.svg";
-import { Header, Counter } from "@repo/ui";
+import { Header, Counter } from '@repo/ui';
+import typescriptLogo from '/typescript.svg';
 
 export default function Home() {
   return (
@@ -8,11 +8,7 @@ export default function Home() {
         <img src="/vite.svg" className="logo" alt="Vite logo" />
       </a>
       <a href="https://www.typescriptlang.org/" target="_blank">
-        <img
-          src={typescriptLogo}
-          className="logo vanilla"
-          alt="TypeScript logo"
-        />
+        <img src={typescriptLogo} className="logo vanilla" alt="TypeScript logo" />
       </a>
       <Header title="Web" />
       <div className="card">

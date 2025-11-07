@@ -1,0 +1,12 @@
+{
+  "name": "@repo/prettier-config",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0"
+  }
+}
