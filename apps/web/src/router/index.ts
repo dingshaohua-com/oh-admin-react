@@ -1,15 +1,17 @@
 import { lazy } from 'react';
-import Root from '../components/root';
+import Layout from '@/components/layout';
+// import Root from '../components/root';
 import { createHashRouter } from 'react-router';
 
-const router = createHashRouter([
+export const router = createHashRouter([
+  {
+    path: '/home',
+    Component: lazy(() => import('../pages/home')),
+  },
   {
     path: '/',
-    Component: Root,
-    children: [
-      { index: true, Component: lazy(() => import('../pages/home')) },
-      //   { path: '/teacher', Component: lazy(() => import('../pages/teacher')) }
-    ],
+    Component: Layout,
+    children: [{ index: true, Component: lazy(() => import('@/pages/welcome')) }],
   },
 ]);
 
