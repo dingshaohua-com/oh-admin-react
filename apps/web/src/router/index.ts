@@ -13,6 +13,9 @@ export const router = createHashRouter([
     Component: Layout,
     children: [
       { index: true, Component: lazy(() => import('@/pages/welcome')) },
+      { path: 'users', Component: lazy(() => import('@/pages/users')) },
+      { path: 'content', Component: lazy(() => import('@/pages/content')) },
+      { path: 'settings', Component: lazy(() => import('@/pages/settings')) },
     ],
   },
 ]);
