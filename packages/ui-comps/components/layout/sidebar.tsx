@@ -1,7 +1,6 @@
 import { cn } from '@repo/shadcn-comps/lib/utils';
 import { Link, useLocation } from 'react-router';
 import { ChevronDown } from 'lucide-react';
-import { useLayout } from './layout-context';
 import { useState, ReactNode } from 'react';
 
 interface SidebarProps {
@@ -9,6 +8,7 @@ interface SidebarProps {
   logo?: ReactNode;
   title?: string;
   menuItems: MenuItem[];
+  defaultCollapsed?: boolean;
 }
 
 export interface MenuItem {
@@ -20,9 +20,13 @@ export interface MenuItem {
 }
 
 export default function Sidebar(props: SidebarProps) {
-  const { collapsed, toggleCollapsed } = useLayout();
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState(props.defaultCollapsed ?? false);
   const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => !prev);
+  };
 
   const toggleSubmenu = (key: string) => {
     setOpenKeys((prev) =>
