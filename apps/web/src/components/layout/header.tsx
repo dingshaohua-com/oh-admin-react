@@ -1,7 +1,6 @@
 import { cn } from '@repo/shadcn-comps/lib/utils';
 import { useLocation } from 'react-router';
-import { Bell, User, ChevronRight, Menu } from 'lucide-react';
-import { useLayout } from '@/contexts/LayoutContext';
+import { Bell, User, ChevronRight } from 'lucide-react';
 
 interface HeaderProps {
   className?: string;
@@ -12,53 +11,41 @@ const breadcrumbMap: Record<string, string[]> = {
   '/': ['首页', '仪表盘'],
   '/users': ['首页', '用户管理'],
   '/content': ['首页', '内容管理'],
-  '/settings': ['首页', '系统设置'],
+  '/settings': ['首页', '系统设置', '基本设置'],
+  '/settings/security': ['首页', '系统设置', '安全设置'],
 };
 
 export default function Header(props: HeaderProps) {
   const location = useLocation();
-  const { toggleCollapsed } = useLayout();
   const breadcrumbs = breadcrumbMap[location.pathname] || ['首页'];
 
   return (
     <div
       className={cn(
-        'bg-white border-b border-gray-200 px-6 flex items-center justify-between shadow-sm',
+        'bg-white border-b border-gray-200 px-6 py-2 flex items-center justify-between shadow-sm',
         props.className
       )}
     >
-      {/* 左侧：折叠按钮 + 面包屑 */}
-      <div className="flex items-center gap-4">
-        {/* 折叠按钮 */}
-        <button
-          onClick={toggleCollapsed}
-          className="p-2 hover:bg-gray-100 rounded transition-colors"
-          aria-label="Toggle sidebar"
-        >
-          <Menu className="w-5 h-5 text-gray-600" />
-        </button>
-
-        {/* 面包屑 */}
-        <div className="flex items-center gap-2 text-sm">
-          {breadcrumbs.map((item, index) => (
-            <div key={index} className="flex items-center gap-2">
-              {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400" />}
-              <span
-                className={cn(
-                  index === breadcrumbs.length - 1
-                    ? 'text-gray-900 font-medium'
-                    : 'text-gray-500'
-                )}
-              >
-                {item}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* 左侧：面包屑 */}
+      <div className="flex items-center gap-2 text-sm">
+        {breadcrumbs.map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400" />}
+            <span
+              className={cn(
+                index === breadcrumbs.length - 1
+                  ? 'text-gray-900 font-medium'
+                  : 'text-gray-500'
+              )}
+            >
+              {item}
+            </span>
+          </div>
+        ))}
       </div>
 
       {/* 右侧操作区 */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         {/* 通知 */}
         <button className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
           <Bell className="w-5 h-5 text-gray-600" />
@@ -66,9 +53,9 @@ export default function Header(props: HeaderProps) {
         </button>
 
         {/* 用户信息 */}
-        <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-3 py-2 rounded transition-colors">
-          <div className="w-8 h-8 bg-[#1890ff] rounded-full flex items-center justify-center">
-            <User className="w-5 h-5 text-white" />
+        <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-2 rounded transition-colors">
+          <div className="w-6 h-6 bg-[#1890ff] rounded-full flex items-center justify-center">
+            <User className="w-4 h-4 text-white" />
           </div>
           <span className="text-sm text-gray-700">Admin</span>
         </div>

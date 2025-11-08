@@ -13,7 +13,7 @@ export default function Layout() {
         {/* 右侧主体区域 */}
         <div className="flex-1 flex flex-col h-full overflow-hidden">
           {/* 顶部导航 */}
-          <Header className="h-16 shrink-0" />
+          <Header className="h-12 shrink-0" />
 
           {/* 内容区域 */}
           <Content />
