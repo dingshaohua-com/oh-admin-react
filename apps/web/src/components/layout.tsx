@@ -1,3 +1,4 @@
+import Layout from '@repo/ui-comps/layout';
 import {
   LayoutDashboard,
   Users,
@@ -9,7 +10,7 @@ import {
 } from 'lucide-react';
 import { MenuItem } from '@repo/ui-comps';
 
-export const menuItems: MenuItem[] = [
+const menuItems: MenuItem[] = [
   {
     key: 'dashboard',
     label: '仪表盘',
@@ -49,6 +50,18 @@ export const menuItems: MenuItem[] = [
   },
 ];
 
-export const logo = <Crown className="w-8 h-8 text-[#1890ff] shrink-0" />;
-export const title = 'xxAdmin';
+const logo = <Crown className="w-8 h-8 text-[#1890ff] shrink-0" />;
+const title = 'xxAdmin';
+
+
+
+export default function LayoutWrapper() {
+  return (
+    <Layout
+      logo={logo}
+      title={title}
+      menuItems={menuItems}
+    />
+  );
+}
 
