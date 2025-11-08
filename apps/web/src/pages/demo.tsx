@@ -1,4 +1,4 @@
-import { Header, Counter } from '@repo/ui';
+import { Header, Counter } from '../../../../packages/ui-comps';
 import typescriptLogo from '/typescript.svg';
 
 export default function Home() {

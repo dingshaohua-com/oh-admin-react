@@ -29,9 +29,9 @@ importers:
       '@repo/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
-      '@repo/ui':
+      '@repo/ui-comps':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/ui-comps
       '@tailwindcss/vite':
         specifier: ^4.1.16
         version: 4.1.16(vite@7.2.1)
@@ -130,14 +130,23 @@ importers:
 
   packages/typescript-config: {}
 
-  packages/ui:
+  packages/ui-comps:
     dependencies:
+      '@repo/shadcn-comps':
+        specifier: workspace:*
+        version: link:../shadcn-comps
+      lucide-react:
+        specifier: ^0.552.0
+        version: 0.552.0(react@19.2.0)
       react:
         specifier: ^19.2.0
         version: 19.2.0
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      react-router:
+        specifier: ^7.9.5
+        version: 7.9.5(react-dom@19.2.0)(react@19.2.0)
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*

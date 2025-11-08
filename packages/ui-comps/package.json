@@ -1,19 +1,23 @@
 {
-  "name": "@repo/ui",
+  "name": "@repo/ui-comps",
   "version": "0.0.0",
   "exports": {
     ".": "./index.ts",
-    "./counter": "./components/counter.ts",
-    "./header": "./components/header.ts",
-    "./setup-counter": "./utils/counter.ts"
+    "./counter": "./components/counter.tsx",
+    "./header": "./components/header.tsx",
+    "./layout": "./components/layout/index.tsx",
+    "./layout/*": "./components/layout/*.tsx"
   },
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts\""
   },
   "dependencies": {
+    "@repo/shadcn-comps": "workspace:*",
+    "lucide-react": "^0.552.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router": "^7.9.5"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",

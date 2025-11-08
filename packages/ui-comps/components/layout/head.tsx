@@ -1,23 +1,47 @@
 import { cn } from '@repo/shadcn-comps/lib/utils';
 import { useLocation } from 'react-router';
 import { Bell, User, ChevronRight } from 'lucide-react';
+import { MenuItem } from './sidebar';
 
 interface HeaderProps {
   className?: string;
+  menuItems?: MenuItem[];
+  breadcrumbMap?: Record<string, string[]>;
 }
-
-// 路由到面包屑的映射
-const breadcrumbMap: Record<string, string[]> = {
-  '/': ['首页', '仪表盘'],
-  '/users': ['首页', '用户管理'],
-  '/content': ['首页', '内容管理'],
-  '/settings': ['首页', '系统设置', '基本设置'],
-  '/settings/security': ['首页', '系统设置', '安全设置'],
-};
 
 export default function Header(props: HeaderProps) {
   const location = useLocation();
-  const breadcrumbs = breadcrumbMap[location.pathname] || ['首页'];
+  
+  // 从菜单结构中推导面包屑
+  const getBreadcrumbsFromMenu = (pathname: string): string[] => {
+    const breadcrumbs: string[] = ['首页'];
+    
+    const findPath = (items: MenuItem[], path: string, parents: string[] = []): string[] | null => {
+      for (const item of items) {
+        if (item.path === path) {
+          return [...parents, item.label];
+        }
+        if (item.children) {
+          const result = findPath(item.children, path, [...parents, item.label]);
+          if (result) return result;
+        }
+      }
+      return null;
+    };
+    
+    if (props.menuItems) {
+      const path = findPath(props.menuItems, pathname);
+      if (path) {
+        breadcrumbs.push(...path);
+      }
+    }
+    
+    return breadcrumbs;
+  };
+  
+  // 优先使用自定义面包屑映射，否则从菜单推导
+  const breadcrumbs = props.breadcrumbMap?.[location.pathname] 
+    || getBreadcrumbsFromMenu(location.pathname);
 
   return (
     <div
@@ -63,3 +87,4 @@ export default function Header(props: HeaderProps) {
     </div>
   );
 }
+

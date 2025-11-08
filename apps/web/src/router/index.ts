@@ -1,7 +1,6 @@
 import { lazy } from 'react';
-import Layout from '@/components/layout';
-// import Root from '../components/root';
 import { createHashRouter } from 'react-router';
+import LayoutWrapper from '@/components/LayoutWrapper';
 
 export const router = createHashRouter([
   {
@@ -10,7 +9,7 @@ export const router = createHashRouter([
   },
   {
     path: '/',
-    Component: Layout,
+    Component: LayoutWrapper,
     children: [
       { index: true, Component: lazy(() => import('@/pages/welcome')) },
       { path: 'users', Component: lazy(() => import('@/pages/users')) },
