@@ -15,9 +15,9 @@ pnpm dlx prisma init
 `.env`：一个 dotenv 文件，通常用于将数据库货其它配置的环境变量  
 `prisma.config.ts`：prisma 配置文件
 
+注意的是，需要删除`prisma.config.ts`，否则后续步骤会失败！
 
-
-### 设置数据库连接
+### 设置prisma数据库连接
 .env配置如下
 ```sh
 DATABASE_URL="mysql://用户名:密码@主机:端口/数据库"
@@ -37,7 +37,7 @@ datasource db {
 
 
 
-### 生成模型
+### prisma生成模型
 以下命令会根据数据库中的表结构生成模型到项目中（`prisma/schema.prisma`）
 ```sh
 pnpm dlx prisma db pull
@@ -48,3 +48,26 @@ pnpm dlx prisma db pull
 npx prisma migrate dev --name init
 ```
 
+
+### 生成并使用prisma客户端
+Prisma Client会根据您的模型生成 dao 层代码（即封装了 crud 的操作）。  
+
+安装过程中 Prisma 会自动为您调用 prisma generate 命令
+```sh
+pnpm add @prisma/client
+```
+
+或者您也可以手动调用（主要是针对后续更新模型后 需要再次生成）
+```sh
+pnpm dlx prisma generate
+```
+
+`prisma generate` 命令会读取您的 Prisma 架构，并更新位于 `node_modules/@prisma/client` 中的生成 Prisma 客户端库。
+
+最后我们使用客户端
+```ts
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+prisma.user.update({...})
+```
