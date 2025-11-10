@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { user as User } from '@prisma/client';
 
-@Controller('user') // 在这里定义路径前缀
+@Controller('user')
 export class UserController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  getHello(): any {
-    const res = this.prisma.user.findMany();
-    return res;
+  getUsers(): Promise<User[]> {
+    return this.prisma.user.findMany();
   }
 }

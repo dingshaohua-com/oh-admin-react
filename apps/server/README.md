@@ -66,8 +66,62 @@ pnpm dlx prisma generate
 
 最后我们使用客户端
 ```ts
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'; 
 
 const prisma = new PrismaClient();
 prisma.user.update({...})
 ```
+
+### 优雅的使用prisma客户端
+我们创建prisma.service.ts来管理prisma客户端的生命周期，并且将其注册为nestjs的provider，然后在需要使用的地方注入即可！
+(为方便演示，我还创建了个UserController，用来调用，所以这里也显式注册到app.module.ts的controllers中)
+
+app.module.ts
+```ts
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UserController } from 'src/user/user.controller';
+import { PrismaService } from 'src/prisma/prisma.service';
+
+@Module({
+  controllers: [AppController, UserController],
+  providers: [AppService, PrismaService],
+})
+export class AppModule {}
+```
+
+prisma.service.ts
+```ts
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+    await this.$connect();
+  }
+}
+```
+
+最后在user.controller.ts中使用
+```ts
+import { Controller, Get } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { user as User } from '@prisma/client';
+
+@Controller('user')
+export class UserController {
+  constructor(private prisma: PrismaService) {}
+
+  @Get()
+  getUsers(): Promise<User[]> {
+    return this.prisma.user.findMany();
+  }
+}
+```
+
+现在试试效果 http://localhost:3000/user
+
+
+
