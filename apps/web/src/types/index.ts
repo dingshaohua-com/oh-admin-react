@@ -1,0 +1,1 @@
+export type QuickLoginType = 'password' | 'email' | 'sms' | 'wechat' | 'qq';
