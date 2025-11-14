@@ -1,8 +1,12 @@
 import { lazy } from 'react';
-import { createHashRouter } from 'react-router';
 import Layout from '@/components/layout';
+import { createHashRouter } from 'react-router';
 
 export const router = createHashRouter([
+  {
+    path: '/login',
+    Component: lazy(() => import('../pages/login')),
+  },
   {
     path: '/home',
     Component: lazy(() => import('../pages/home')),
