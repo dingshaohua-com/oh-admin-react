@@ -17,17 +17,10 @@ export default function Login() {
   const [countdown, setCountdown] = useState(0);
 
   // 初始化表单
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    getValues,
-    watch,
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: initData.passwordForm,
-  });
+  // prettier-ignore
+  const { control, handleSubmit, formState: { errors }, reset, getValues, watch } = useForm<LoginForm>(
+    { resolver: zodResolver(loginSchema), defaultValues: initData.passwordForm }
+  );
 
   // 监听当前登录类型
   const loginType = watch('loginType');
