@@ -88,45 +88,53 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="bg-white rounded-xl shadow-soft p-10 w-full max-w-sm">
-        <img className="w-20 mx-auto rounded-full" src={logoImg} alt="Logo" />
+      <div className="bg-white rounded-xl shadow-soft px-10 py-6 w-full max-w-sm relative">
+        <img className="w-26 mx-auto rounded-full" src={logoImg} alt="Logo" />
 
         <div className="space-y-6 mt-6">
           {/* 统一登录表单 */}
-          <form onSubmit={handleSubmit(onLogin)} className="space-y-4">
+          <form onSubmit={handleSubmit(onLogin)} className="space-y-2">
             {loginType === 'password' && (
               <>
-                <Field orientation="horizontal">
-                  <FieldLabel className="w-16 shrink-0">账号</FieldLabel>
-                  <Controller name="account" control={control} render={({ field }) => <Input {...field} placeholder="用户名/邮箱/手机号" />} />
-                  {'account' in errors && errors.account && <FieldError>{errors.account.message}</FieldError>}
+                <Field className="gap-1">
+                  <div className="flex items-center gap-2">
+                    <FieldLabel className="w-12 shrink-0">账号</FieldLabel>
+                    <Controller name="account" control={control} render={({ field }) => <Input {...field} placeholder="用户名" />} />
+                  </div>
+                  <div className="min-h-5 text-right">{'account' in errors && errors.account && <FieldError>{errors.account.message}</FieldError>}</div>
                 </Field>
 
-                <Field orientation="horizontal">
-                  <FieldLabel className="w-16 shrink-0">密码</FieldLabel>
-                  <Controller name="password" control={control} render={({ field }) => <Input {...field} type="password" placeholder="请输入密码" />} />
-                  {'password' in errors && errors.password && <FieldError>{errors.password.message}</FieldError>}
+                <Field className="gap-1">
+                  <div className="flex items-center gap-2">
+                    <FieldLabel className="w-12 shrink-0">密码</FieldLabel>
+                    <Controller name="password" control={control} render={({ field }) => <Input {...field} type="password" placeholder="请输入密码" />} />
+                  </div>
+                  <div className="min-h-5 text-right">{'password' in errors && errors.password && <FieldError>{errors.password.message}</FieldError>}</div>
                 </Field>
               </>
             )}
 
             {loginType === 'email' && (
               <>
-                <Field orientation="horizontal">
-                  <FieldLabel className="w-16 shrink-0">邮箱</FieldLabel>
-                  <Controller name="email" control={control} render={({ field }) => <Input {...field} type="email" placeholder="请输入邮箱地址" />} />
-                  {'email' in errors && errors.email && <FieldError>{errors.email.message}</FieldError>}
+                <Field className="gap-1">
+                  <div className="flex items-center gap-2">
+                    <FieldLabel className="w-12 shrink-0">邮箱</FieldLabel>
+                    <Controller name="email" control={control} render={({ field }) => <Input {...field} type="email" placeholder="请输入邮箱地址" />} />
+                  </div>
+                  <div className="min-h-5 text-right">{'email' in errors && errors.email && <FieldError>{errors.email.message}</FieldError>}</div>
                 </Field>
 
-                <Field orientation="horizontal">
-                  <FieldLabel className="w-16 shrink-0">验证码</FieldLabel>
-                  <div className="flex gap-2">
-                    <Controller name="code" control={control} render={({ field }) => <Input {...field} placeholder="请输入验证码" />} />
-                    <Button type="button" onClick={sendCode} disabled={isCodeSent} className="w-24">
-                      {isCodeSent ? `${countdown}s` : '发送'}
-                    </Button>
+                <Field className="gap-1">
+                  <div className="flex items-center gap-2">
+                    <FieldLabel className="w-12 shrink-0">验证码</FieldLabel>
+                    <div className="flex gap-2 flex-1">
+                      <Controller name="code" control={control} render={({ field }) => <Input {...field} placeholder="请输入验证码" />} />
+                      <Button type="button" onClick={sendCode} disabled={isCodeSent} className="w-24">
+                        {isCodeSent ? `${countdown}s` : '发送'}
+                      </Button>
+                    </div>
                   </div>
-                  {'code' in errors && errors.code && <FieldError>{errors.code.message}</FieldError>}
+                  <div className="min-h-5 text-right">{'code' in errors && errors.code && <FieldError>{errors.code.message}</FieldError>}</div>
                 </Field>
               </>
             )}
