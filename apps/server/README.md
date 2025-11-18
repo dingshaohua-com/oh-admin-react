@@ -124,4 +124,5 @@ export class UserController {
 现在试试效果 http://localhost:3000/user
 
 
-
+## 集成 openApi
+官方指引：https://docs.nestjs.cn/openapi
