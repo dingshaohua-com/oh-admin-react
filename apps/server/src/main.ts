@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config(); // 注入环境变量，必须在所有模块加载前执行
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
