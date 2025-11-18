@@ -1,10 +1,14 @@
+import * as dotenv from 'dotenv';
+dotenv.config(); // 注入环境变量，必须在所有模块加载前执行
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // 集成openApi(swagger)
   const config = new DocumentBuilder()
     .setTitle('Cats example')
     .setDescription('The cats API description')
@@ -13,6 +17,15 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
+
+  // 集成api-scalar
+  app.use(
+    '/reference',
+    apiReference({
+      // cdn: 'https://github.com/dingshaohua-com/scalar-i18n/releases/download/v1.38.1/scalar-api-reference.js',
+      content: documentFactory,
+    }),
+  );
 
   await app.listen(process.env.PORT ?? 3000);
 }
