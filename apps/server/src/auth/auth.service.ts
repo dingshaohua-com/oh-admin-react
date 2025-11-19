@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto, LoginType } from './dto/auth.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as crypto from 'crypto';
 
@@ -7,17 +7,16 @@ import * as crypto from 'crypto';
 export class AuthService {
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * 用户登录
+   * 注意：使用非空断言操作符(!)是安全的，因为 class-validator 已经在请求到达此处之前验证了必填字段
+   * 因为 Ts 的类型系统是静态分析的，它只能在编译时检查类型。而 class-validator 是运行时验证，在程序执行时才会检查数据的有效性。
+   */
   async login(loginDto: LoginDto) {
-    if (loginDto.loginType === 'password') {
-      if (!loginDto.account || !loginDto.password) {
-        throw new UnauthorizedException('账号和密码不能为空');
-      }
-      return this.passwordLogin(loginDto.account, loginDto.password);
-    } else if (loginDto.loginType === 'email') {
-      if (!loginDto.email || !loginDto.code) {
-        throw new UnauthorizedException('邮箱和验证码不能为空');
-      }
-      return this.emailLogin(loginDto.email, loginDto.code);
+    if (loginDto.loginType === LoginType.PASSWORD) {
+      return this.passwordLogin(loginDto.account!, loginDto.password!);
+    } else if (loginDto.loginType === LoginType.EMAIL) {
+      return this.emailLogin(loginDto.email!, loginDto.code!);
     }
   }
 
