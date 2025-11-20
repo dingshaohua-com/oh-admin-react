@@ -37,6 +37,14 @@ class AuthService {
 }
 ```
 
+
+另外，我们登录方式是枚举模型，这就是涉及到了多选一的类型情况，可以参考这里[oneOf、anyOf、allOf](https://docs.nestjs.cn/openapi/types-and-parameters#oneofanyofallof)。
+
+完全正确！您理解得很准确。
+
+
+
+
 ## 集成 openApi
 
 官方指引：https://docs.nestjs.cn/openapi

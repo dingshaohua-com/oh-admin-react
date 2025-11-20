@@ -1,9 +1,9 @@
 import {
   IsEnum,
-  ValidateIf,
   IsString,
   IsEmail,
   Matches,
+  IsNotEmpty,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -12,46 +12,60 @@ export enum LoginType {
   PASSWORD = 'password',
   EMAIL = 'email',
 }
-export class LoginDto {
+
+// 密码登录 DTO
+export class PasswordLoginDto {
   @ApiProperty({
     description: '登录类型',
-    enum: LoginType,
+    enum: [LoginType.PASSWORD],
+    default: LoginType.PASSWORD,
   })
-  @IsEnum(LoginType, { message: '登录类型必须是 password 或 email' })
-  loginType: LoginType;
+  @IsEnum(LoginType)
+  loginType: LoginType.PASSWORD;
 
   @ApiProperty({
-    description: '账户',
-    required: false,
+    description: '账户（用户名或邮箱）',
+    example: 'admin',
   })
-  @ValidateIf((o: LoginDto) => o.loginType === LoginType.PASSWORD)
   @IsString()
+  @IsNotEmpty({ message: '账户不能为空' })
   @Matches(/^\S+$/, { message: '账户不能为空' })
-  account?: string;
+  account: string;
 
   @ApiProperty({
     description: '密码',
-    required: false,
+    example: '123456',
   })
-  @ValidateIf((o: LoginDto) => o.loginType === LoginType.PASSWORD)
   @IsString()
+  @IsNotEmpty({ message: '密码不能为空' })
   @Matches(/^\S+$/, { message: '密码不能为空' })
-  password?: string;
+  password: string;
+}
+
+// 邮箱验证码登录 DTO
+export class EmailLoginDto {
+  @ApiProperty({
+    description: '登录类型',
+    enum: [LoginType.EMAIL],
+    default: LoginType.EMAIL,
+  })
+  @IsEnum(LoginType)
+  loginType: LoginType.EMAIL;
 
   @ApiProperty({
     description: '邮箱',
-    required: false,
+    example: 'user@example.com',
   })
-  @ValidateIf((o: LoginDto) => o.loginType === LoginType.EMAIL)
-  @IsEmail()
-  email?: string;
+  @IsEmail({}, { message: '邮箱格式不正确' })
+  @IsNotEmpty({ message: '邮箱不能为空' })
+  email: string;
 
   @ApiProperty({
     description: '验证码',
-    required: false,
+    example: '123456',
   })
-  @ValidateIf((o: LoginDto) => o.loginType === LoginType.EMAIL)
   @IsString()
+  @IsNotEmpty({ message: '验证码不能为空' })
   @Matches(/^\S+$/, { message: '验证码不能为空' })
-  code?: string;
+  code: string;
 }

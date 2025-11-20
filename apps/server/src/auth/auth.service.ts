@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto, LoginType } from './dto/auth.dto';
+import { PasswordLoginDto, EmailLoginDto, LoginType } from './dto/auth.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as crypto from 'crypto';
 
@@ -9,14 +9,13 @@ export class AuthService {
 
   /**
    * 用户登录
-   * 注意：使用非空断言操作符(!)是安全的，因为 class-validator 已经在请求到达此处之前验证了必填字段
-   * 因为 Ts 的类型系统是静态分析的，它只能在编译时检查类型。而 class-validator 是运行时验证，在程序执行时才会检查数据的有效性。
+   * 使用联合类型，TypeScript 可以根据 loginType 自动推断出对应的字段类型
    */
-  async login(loginDto: LoginDto) {
+  async login(loginDto: PasswordLoginDto | EmailLoginDto) {
     if (loginDto.loginType === LoginType.PASSWORD) {
-      return this.passwordLogin(loginDto.account!, loginDto.password!);
+      return this.passwordLogin(loginDto.account, loginDto.password);
     } else if (loginDto.loginType === LoginType.EMAIL) {
-      return this.emailLogin(loginDto.email!, loginDto.code!);
+      return this.emailLogin(loginDto.email, loginDto.code);
     }
   }
 
@@ -30,7 +29,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('用户名或密码错误');
+      throw new UnauthorizedException('用户不存在');
     }
 
     // 验证密码
