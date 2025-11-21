@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from 'src/core/prisma/prisma.service';
 import { GetUserDto } from './dto/user.dto';
 
 @ApiTags('用户')
