@@ -1,11 +1,16 @@
 import * as crypto from 'crypto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { VerificationType } from '../verification/dto/verification.dto';
+import { VerificationService } from '../verification/verification.service';
 import { PasswordLoginDto, EmailLoginDto, LoginType } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private verificationService: VerificationService,
+  ) {}
 
   /**
    * 用户登录
@@ -55,9 +60,9 @@ export class AuthService {
   }
 
   // 邮箱验证码登录
-  private async emailLogin(email: string, _code: string) {
-    // TODO: 验证验证码（需要实现验证码存储和验证逻辑）
-    // 这里暂时简单处理，实际应该从 Redis 或数据库中验证
+  private async emailLogin(email: string, code: string) {
+    // 验证验证码
+    await this.verificationService.verifyCode(email, code, VerificationType.LOGIN);
 
     const user = await this.prisma.user.findFirst({
       where: { email },
