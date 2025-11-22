@@ -1,7 +1,7 @@
+import * as crypto from 'crypto';
+import { PrismaService } from 'src/core/prisma/prisma.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PasswordLoginDto, EmailLoginDto, LoginType } from './dto/auth.dto';
-import { PrismaService } from 'src/core/prisma/prisma.service';
-import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {

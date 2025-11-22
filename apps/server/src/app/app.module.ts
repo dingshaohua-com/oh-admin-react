@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from 'src/modules/user/user.module';
+import { AppController } from './app.controller';
 import { CoreModule } from 'src/core/core.module';
-import { AuthModule } from 'src/modules/auth/auth.module';
 import { getCacheModule } from 'src/common/cache-helper';
+import { AuthModule } from 'src/modules/auth/auth.module';
+import { UserModule } from 'src/modules/user/user.module';
+
 @Module({
   imports: [CoreModule, UserModule, AuthModule, getCacheModule()],
   controllers: [AppController],

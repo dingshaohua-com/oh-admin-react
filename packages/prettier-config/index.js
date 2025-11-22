@@ -8,5 +8,6 @@ module.exports = {
   singleQuote: true, // 使用单引号代替双引号
   printWidth: 100000,
   importOrderSortByLength: 'asc',
+  importOrderParserPlugins: ['typescript', 'decorators-legacy'],
   plugins: [sortImports],
 };

@@ -1,13 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Controller, Post, Body } from '@nestjs/common';
 import { PasswordLoginDto, EmailLoginDto } from './dto/auth.dto';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiExtraModels,
-  ApiBody,
-  getSchemaPath,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiExtraModels, ApiBody, getSchemaPath } from '@nestjs/swagger';
 
 @ApiTags('认证')
 @ApiExtraModels(PasswordLoginDto, EmailLoginDto)
@@ -23,10 +17,7 @@ export class AuthController {
   @ApiBody({
     description: '登录信息',
     schema: {
-      oneOf: [
-        { $ref: getSchemaPath(PasswordLoginDto) },
-        { $ref: getSchemaPath(EmailLoginDto) },
-      ],
+      oneOf: [{ $ref: getSchemaPath(PasswordLoginDto) }, { $ref: getSchemaPath(EmailLoginDto) }],
     },
   })
   login(@Body() loginDto: PasswordLoginDto | EmailLoginDto) {

@@ -1,11 +1,5 @@
-import {
-  IsEnum,
-  IsString,
-  IsEmail,
-  Matches,
-  IsNotEmpty,
-} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsString, IsEmail, Matches, IsNotEmpty } from 'class-validator';
 
 // 定义枚举
 export enum LoginType {
