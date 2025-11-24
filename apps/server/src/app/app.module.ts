@@ -5,10 +5,11 @@ import { CoreModule } from 'src/core/core.module';
 import { getCacheModule } from 'src/common/cache-helper';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { UserModule } from 'src/modules/user/user.module';
+import { getMailerModule } from 'src/common/mailer-helper';
 import { VerificationModule } from 'src/modules/verification/verification.module';
 
 @Module({
-  imports: [CoreModule, UserModule, AuthModule, VerificationModule, getCacheModule()],
+  imports: [CoreModule, UserModule, AuthModule, VerificationModule, getCacheModule(), getMailerModule()],
   controllers: [AppController],
   providers: [AppService],
 })

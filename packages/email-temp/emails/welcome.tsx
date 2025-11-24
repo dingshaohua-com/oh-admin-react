@@ -1,3 +1,5 @@
+import { render } from '@react-email/components';
+
 export default function WelcomeEmail() {
   return (
     <div>
@@ -5,3 +7,7 @@ export default function WelcomeEmail() {
     </div>
   );
 }
+
+export function renderWelcomeEmail () {
+  return render(WelcomeEmail());
+};

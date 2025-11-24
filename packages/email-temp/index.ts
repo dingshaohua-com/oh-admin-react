@@ -1,1 +1,1 @@
-export { default as WelcomeEmail } from './templates/welcome';
+export { default as WelcomeEmail, renderWelcomeEmail } from './emails/welcome';

@@ -1,6 +1,10 @@
+import { renderWelcomeEmail } from '@repo/email-temp';
+import { MailerService } from '@nestjs-modules/mailer';
 import { VerificationType } from './dto/verification.dto';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject, Injectable, BadRequestException, Logger } from '@nestjs/common';
+
+// 引入你的 React 组件
 
 @Injectable()
 export class VerificationService {
@@ -8,7 +12,10 @@ export class VerificationService {
   private readonly CODE_TTL = 5 * 60 * 1000; // 验证码有效期：5分钟（毫秒）
   private readonly MAX_RETRY = 5; // 最大重试次数
 
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly mailerService: MailerService,
+  ) {}
 
   /**
    * 发送验证码通用接口
@@ -42,7 +49,12 @@ export class VerificationService {
     // 7. 发送验证码（这里暂时只打印日志，实际应该调用邮件服务）
     this.logger.log(`发送验证码到邮箱 ${email}，业务场景：${type}，验证码：${code}`);
     // TODO: 集成邮件服务
-    // await this.mailService.sendVerificationCode(email, code, type);
+    const emailHtml = await renderWelcomeEmail();
+    await this.mailerService.sendMail({
+      to: email,
+      subject: '欢迎加入我们！',
+      html: emailHtml,
+    });
 
     return {
       success: true,

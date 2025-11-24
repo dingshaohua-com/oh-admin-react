@@ -50,6 +50,9 @@ importers:
       '@prisma/client':
         specifier: ^6.19.0
         version: 6.19.0(prisma@6.19.0)(typescript@5.9.3)
+      '@repo/email-temp':
+        specifier: workspace:^
+        version: link:../../packages/email-temp
       '@scalar/nestjs-api-reference':
         specifier: ^1.0.7
         version: 1.0.7
