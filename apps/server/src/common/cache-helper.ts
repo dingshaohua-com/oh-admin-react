@@ -4,9 +4,9 @@ import { CacheModule } from '@nestjs/cache-manager';
 export function getCacheModule() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   return CacheModule.registerAsync({
+    isGlobal: true,
     useFactory: () => {
       return {
-        isGlobal: true,
         stores: [
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           createKeyv('redis://66.112.211.55:6379/0', {
