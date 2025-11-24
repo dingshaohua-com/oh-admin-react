@@ -1,1 +1,0 @@
-export { default as WelcomeEmail, renderWelcomeEmail } from './emails/welcome';

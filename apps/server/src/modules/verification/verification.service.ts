@@ -1,4 +1,4 @@
-import { renderWelcomeEmail } from '@repo/email-temp';
+import { templates } from 'src/common/mailer-helper';
 import { MailerService } from '@nestjs-modules/mailer';
 import { VerificationType } from './dto/verification.dto';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
@@ -49,12 +49,7 @@ export class VerificationService {
     // 7. 发送验证码（这里暂时只打印日志，实际应该调用邮件服务）
     this.logger.log(`发送验证码到邮箱 ${email}，业务场景：${type}，验证码：${code}`);
     // TODO: 集成邮件服务
-    const emailHtml = await renderWelcomeEmail();
-    await this.mailerService.sendMail({
-      to: email,
-      subject: '欢迎加入我们！',
-      html: emailHtml,
-    });
+    await this.mailerService.sendMail(templates.login({ to: email, code }));
 
     return {
       success: true,
