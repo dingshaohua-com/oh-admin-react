@@ -1,11 +1,10 @@
 import { AuthService } from './auth.service';
 import { Controller, Post, Body, Get, Query } from '@nestjs/common';
-import { PasswordLoginDto, EmailLoginDto } from './dto/auth.dto';
-import { ExistsResponseDto } from 'src/common/dto/response.dto';
+import { PasswordLoginDto, EmailLoginDto, RegisterDto } from './dto/auth.dto';
 import { ApiTags, ApiOperation, ApiExtraModels, ApiBody, getSchemaPath, ApiQuery, ApiOkResponse } from '@nestjs/swagger';
 
 @ApiTags('Auth')
-@ApiExtraModels(PasswordLoginDto, EmailLoginDto, ExistsResponseDto)
+@ApiExtraModels(PasswordLoginDto, EmailLoginDto, RegisterDto)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -31,7 +30,7 @@ export class AuthController {
     description: '用于注册时验证用户名是否已被使用',
   })
   @ApiQuery({ name: 'username', description: '用户名', type: String })
-  @ApiOkResponse({ description: '返回用户名是否存在', type: ExistsResponseDto })
+  @ApiOkResponse({ description: '返回用户名是否存在', type: Boolean })
   checkUsername(@Query('username') username: string) {
     return this.authService.checkUsernameExists(username);
   }
@@ -42,8 +41,18 @@ export class AuthController {
     description: '用于注册时验证邮箱是否已被注册',
   })
   @ApiQuery({ name: 'email', description: '邮箱地址', type: String })
-  @ApiOkResponse({ description: '返回邮箱是否存在', type: ExistsResponseDto })
+  @ApiOkResponse({ description: '返回邮箱是否存在', type: Boolean })
   checkEmail(@Query('email') email: string) {
     return this.authService.checkEmailExists(email);
+  }
+
+  @Post('register')
+  @ApiOperation({
+    summary: '用户注册',
+    description: '通过邮箱验证码进行用户注册',
+  })
+  @ApiBody({ description: '注册信息', type: RegisterDto })
+  register(@Body() registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
   }
 }

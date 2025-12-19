@@ -1,9 +1,9 @@
 import * as crypto from 'crypto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException, ConflictException } from '@nestjs/common';
 import { VerificationType } from '../verification/dto/verification.dto';
 import { VerificationService } from '../verification/verification.service';
-import { PasswordLoginDto, EmailLoginDto, LoginType } from './dto/auth.dto';
+import { PasswordLoginDto, EmailLoginDto, LoginType, RegisterDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -114,5 +114,62 @@ export class AuthService {
       where: { email },
     });
     return Boolean(user);
+  }
+
+  /**
+   * 用户注册
+   */
+  async register(registerDto: RegisterDto) {
+    const { username, email, code, password } = registerDto;
+
+    // 1. 验证邮箱验证码
+    await this.verificationService.verifyCode(email, code, VerificationType.REGISTER);
+
+    // 2. 检查用户名是否已存在
+    const existingUserByUsername = await this.prisma.user.findFirst({
+      where: { username },
+    });
+    if (existingUserByUsername) {
+      throw new ConflictException('用户名已被使用');
+    }
+
+    // 3. 检查邮箱是否已注册
+    const existingUserByEmail = await this.prisma.user.findFirst({
+      where: { email },
+    });
+    if (existingUserByEmail) {
+      throw new ConflictException('邮箱已被注册');
+    }
+
+    // 4. 生成 salt
+    const salt = crypto.randomBytes(16).toString('hex');
+
+    // 5. 加密密码
+    const hashedPassword = this.hashPassword(password, salt);
+
+    // 6. 创建用户
+    const user = await this.prisma.user.create({
+      data: {
+        username,
+        email,
+        password: hashedPassword,
+        salt,
+        role: 'user', // 默认角色
+      },
+    });
+
+    // 7. 返回用户信息（不包含敏感信息）
+    return {
+      success: true,
+      message: '注册成功',
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        nickname: user.nickname,
+        avatar: user.avatar,
+        role: user.role,
+      },
+    };
   }
 }

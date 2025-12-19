@@ -63,3 +63,41 @@ export class EmailLoginDto {
   @Matches(/^\S+$/, { message: '验证码不能为空' })
   code: string;
 }
+
+// 注册 DTO
+export class RegisterDto {
+  @ApiProperty({
+    description: '用户名',
+    example: 'admin',
+  })
+  @IsString()
+  @IsNotEmpty({ message: '用户名不能为空' })
+  @Matches(/^\S+$/, { message: '用户名不能包含空格' })
+  username: string;
+
+  @ApiProperty({
+    description: '邮箱',
+    example: 'user@example.com',
+  })
+  @IsEmail({}, { message: '邮箱格式不正确' })
+  @IsNotEmpty({ message: '邮箱不能为空' })
+  email: string;
+
+  @ApiProperty({
+    description: '验证码',
+    example: '123456',
+  })
+  @IsString()
+  @IsNotEmpty({ message: '验证码不能为空' })
+  @Matches(/^\d{6}$/, { message: '验证码必须是6位数字' })
+  code: string;
+
+  @ApiProperty({
+    description: '密码',
+    example: '123456',
+  })
+  @IsString()
+  @IsNotEmpty({ message: '密码不能为空' })
+  @Matches(/^\S+$/, { message: '密码不能包含空格' })
+  password: string;
+}

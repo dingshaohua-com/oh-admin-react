@@ -9,7 +9,7 @@ export function getCacheModule() {
       return {
         stores: [
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          createKeyv('redis://66.112.211.55:6379/0', {
+          createKeyv('redis://154.12.80.127:6379/0', {
             // 如果想去掉 keyv: 前缀，可以设置 namespace 为空字符串
             namespace: '',
           }),

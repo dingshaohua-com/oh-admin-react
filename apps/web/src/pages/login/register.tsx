@@ -7,41 +7,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Field, FieldError, FieldLabel } from '@repo/shadcn-comps/field';
-import { authControllerCheckUsername, authControllerCheckEmail } from '@/api/endpoints/auth';
+import { authControllerCheckUsername, authControllerCheckEmail, authControllerRegister } from '@/api/endpoints/auth';
+import { verificationControllerSendCode } from '@/api/endpoints/verification';
 
 // 检查用户名是否存在
 const checkUsernameExists = async (username: string): Promise<boolean> => {
-  // TODO: 调用后端 API 检查用户名是否存在
   const response = await authControllerCheckUsername({username});
-  console.log(response);
-  return response.exists;
-  
-//   const data = await response.json();
-//   return data.exists;
-  
-//   // 模拟 API 调用
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       // 模拟：假设 'admin' 和 'test' 已存在
-//       resolve(['admin', 'test'].includes(username.toLowerCase()));
-//     }, 500);
-//   });
+  return response;
 };
 
 // 检查邮箱是否存在
 const checkEmailExists = async (email: string): Promise<boolean> => {
-  // TODO: 调用后端 API 检查邮箱是否存在
-  // const response = await fetch(`/api/check-email?email=${email}`);
-  // const data = await response.json();
-  // return data.exists;
-  
-  // 模拟 API 调用
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // 模拟：假设 'test@example.com' 已存在
-      resolve(['test@example.com'].includes(email.toLowerCase()));
-    }, 500);
-  });
+  const response = await authControllerCheckEmail({email});
+  console.log(response);
+  return response;
 };
 
 // 注册表单验证 schema
@@ -99,6 +78,8 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
     
     try {
       const exists = await checkUsernameExists(username);
+      console.log(1111, exists);
+      
       if (exists) {
         return '用户名已存在';
       }
@@ -141,6 +122,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
     try {
       console.log('注册数据:', values);
       // TODO: 调用注册 API
+      await authControllerRegister(values);
       toast.success('注册成功');
       // 注册成功后切换到登录页面
       onSwitchToLogin();
@@ -161,6 +143,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
       }
       
       // TODO: 调用发送验证码 API
+      await verificationControllerSendCode({email, type: 'register'});
       console.log('发送验证码到邮箱:', email);
 
       setIsCodeSent(true);
@@ -235,7 +218,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                       onBlur={async () => {
                         field.onBlur();
                         // 直接调用验证函数
-                        await validateUsername(field.value).then((result) => {
+                        await validateEmail(field.value).then((result) => {
                           if (result !== true) {
                             setError('email', { type: 'validate', message: result });
                           }

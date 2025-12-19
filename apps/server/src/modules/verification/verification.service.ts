@@ -23,6 +23,8 @@ export class VerificationService {
    * @param type 业务场景 (登录、改密、换绑...)
    */
   async sendCode(email: string, type: VerificationType): Promise<{ success: boolean; message: string }> {
+    console.log('呵呵');
+    
     // 1. 生成验证码
     const code = this.generateCode();
 

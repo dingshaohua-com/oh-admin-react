@@ -9,7 +9,7 @@ import type {
   AuthControllerCheckEmailParams,
   AuthControllerCheckUsernameParams,
   AuthControllerLoginBody,
-  ExistsResponseDto
+  RegisterDto
 } from '../model';
 
 import { customAxiosInstance } from '../api.base';
@@ -39,8 +39,8 @@ export const authControllerLogin = (
  */
 export const authControllerCheckUsername = (
     params: AuthControllerCheckUsernameParams,
- options?: SecondParameter<typeof customAxiosInstance<ExistsResponseDto>>,) => {
-      return customAxiosInstance<ExistsResponseDto>(
+ options?: SecondParameter<typeof customAxiosInstance<boolean>>,) => {
+      return customAxiosInstance<boolean>(
       {url: `/auth/check-username`, method: 'GET',
         params
     },
@@ -52,13 +52,28 @@ export const authControllerCheckUsername = (
  */
 export const authControllerCheckEmail = (
     params: AuthControllerCheckEmailParams,
- options?: SecondParameter<typeof customAxiosInstance<ExistsResponseDto>>,) => {
-      return customAxiosInstance<ExistsResponseDto>(
+ options?: SecondParameter<typeof customAxiosInstance<boolean>>,) => {
+      return customAxiosInstance<boolean>(
       {url: `/auth/check-email`, method: 'GET',
         params
+    },
+      options);
+    }
+  /**
+ * 通过邮箱验证码进行用户注册
+ * @summary 用户注册
+ */
+export const authControllerRegister = (
+    registerDto: RegisterDto,
+ options?: SecondParameter<typeof customAxiosInstance<void>>,) => {
+      return customAxiosInstance<void>(
+      {url: `/auth/register`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: registerDto
     },
       options);
     }
   export type AuthControllerLoginResult = NonNullable<Awaited<ReturnType<typeof authControllerLogin>>>
 export type AuthControllerCheckUsernameResult = NonNullable<Awaited<ReturnType<typeof authControllerCheckUsername>>>
 export type AuthControllerCheckEmailResult = NonNullable<Awaited<ReturnType<typeof authControllerCheckEmail>>>
+export type AuthControllerRegisterResult = NonNullable<Awaited<ReturnType<typeof authControllerRegister>>>

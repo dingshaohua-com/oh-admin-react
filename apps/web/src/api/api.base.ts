@@ -9,7 +9,7 @@ interface ApiResponse<T> {
 
 // 创建 axios 实例并配置 baseURL
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: '/api',
 });
 
 export const customAxiosInstance = <T>(
