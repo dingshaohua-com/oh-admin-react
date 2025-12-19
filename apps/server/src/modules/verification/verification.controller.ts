@@ -3,7 +3,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { VerificationService } from './verification.service';
 
-@ApiTags('验证码')
+@ApiTags('Verification')
 @Controller('verification')
 export class VerificationController {
   constructor(private readonly verificationService: VerificationService) {}

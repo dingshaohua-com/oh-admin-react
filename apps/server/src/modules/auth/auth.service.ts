@@ -102,7 +102,8 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: { username },
     });
-    return { exists: !!user };
+
+    return Boolean(user);
   }
 
   /**
@@ -112,6 +113,6 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: { email },
     });
-    return { exists: !!user };
+    return Boolean(user);
   }
 }

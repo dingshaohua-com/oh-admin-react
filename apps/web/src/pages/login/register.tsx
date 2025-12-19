@@ -7,21 +7,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Field, FieldError, FieldLabel } from '@repo/shadcn-comps/field';
+import { authControllerCheckUsername, authControllerCheckEmail } from '@/api/endpoints/auth';
 
 // 检查用户名是否存在
 const checkUsernameExists = async (username: string): Promise<boolean> => {
   // TODO: 调用后端 API 检查用户名是否存在
-  // const response = await fetch(`/api/check-username?username=${username}`);
-  // const data = await response.json();
-  // return data.exists;
+  const response = await authControllerCheckUsername({username});
+  console.log(response);
+  return response.exists;
   
-  // 模拟 API 调用
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // 模拟：假设 'admin' 和 'test' 已存在
-      resolve(['admin', 'test'].includes(username.toLowerCase()));
-    }, 500);
-  });
+//   const data = await response.json();
+//   return data.exists;
+  
+//   // 模拟 API 调用
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       // 模拟：假设 'admin' 和 'test' 已存在
+//       resolve(['admin', 'test'].includes(username.toLowerCase()));
+//     }, 500);
+//   });
 };
 
 // 检查邮箱是否存在
@@ -72,7 +76,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
 
   // 初始化表单
   // prettier-ignore
-  const { control, handleSubmit, formState: { errors, isValid }, getValues, trigger } = useForm<RegisterForm>({
+  const { control, handleSubmit, formState: { errors, isValid }, getValues, trigger, setError, clearErrors } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
     defaultValues: initRegisterData,
     mode: 'onBlur', // 失焦时验证
@@ -92,6 +96,7 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
     
     // 执行异步验证检查用户名是否存在
     setIsValidatingUsername(true);
+    
     try {
       const exists = await checkUsernameExists(username);
       if (exists) {
@@ -159,7 +164,6 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
       console.log('发送验证码到邮箱:', email);
 
       setIsCodeSent(true);
-      toast.success('验证码已发送');
 
       // 开始倒计时
       let count = 60;
@@ -194,14 +198,18 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                 <Controller
                   name="username"
                   control={control}
-                  rules={{ validate: validateUsername }}
                   render={({ field }) => (
                     <Input
                       {...field}
                       placeholder="请输入用户名"
                       onBlur={async () => {
                         field.onBlur();
-                        await trigger('username');
+                        // 直接调用验证函数
+                        await validateUsername(field.value).then((result) => {
+                          if (result !== true) {
+                            setError('username', { type: 'validate', message: result });
+                          }
+                        });
                       }}
                     />
                   )}
@@ -219,7 +227,6 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                 <Controller
                   name="email"
                   control={control}
-                  rules={{ validate: validateEmail }}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -227,7 +234,12 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
                       placeholder="请输入邮箱地址"
                       onBlur={async () => {
                         field.onBlur();
-                        await trigger('email');
+                        // 直接调用验证函数
+                        await validateUsername(field.value).then((result) => {
+                          if (result !== true) {
+                            setError('email', { type: 'validate', message: result });
+                          }
+                        });
                       }}
                     />
                   )}

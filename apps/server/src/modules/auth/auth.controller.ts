@@ -4,7 +4,7 @@ import { PasswordLoginDto, EmailLoginDto } from './dto/auth.dto';
 import { ExistsResponseDto } from 'src/common/dto/response.dto';
 import { ApiTags, ApiOperation, ApiExtraModels, ApiBody, getSchemaPath, ApiQuery, ApiOkResponse } from '@nestjs/swagger';
 
-@ApiTags('认证')
+@ApiTags('Auth')
 @ApiExtraModels(PasswordLoginDto, EmailLoginDto, ExistsResponseDto)
 @Controller('auth')
 export class AuthController {
