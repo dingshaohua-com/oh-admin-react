@@ -94,4 +94,24 @@ export class AuthService {
       .update(password + salt)
       .digest('hex');
   }
+
+  /**
+   * 检查用户名是否存在
+   */
+  async checkUsernameExists(username: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { username },
+    });
+    return { exists: !!user };
+  }
+
+  /**
+   * 检查邮箱是否存在
+   */
+  async checkEmailExists(email: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { email },
+    });
+    return { exists: !!user };
+  }
 }
