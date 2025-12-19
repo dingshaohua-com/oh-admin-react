@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
-import logoImg from '@/assets/logo.png';
+import logoImg from '@/assets/logo.svg';
 import { User, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { Input } from '@repo/shadcn-comps/input';
@@ -10,11 +10,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { loginSchema, initData, LoginForm } from './helper';
 import { Field, FieldError, FieldLabel } from '@repo/shadcn-comps/field';
+import Register from './register';
 
 export default function Login() {
   const navigate = useNavigate();
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [showRegister, setShowRegister] = useState(false);
 
   // 初始化表单
   // prettier-ignore
@@ -79,10 +81,18 @@ export default function Login() {
     reset(type === 'password' ? initData.passwordForm : initData.emailForm);
   };
 
+  // 如果显示注册页面，直接渲染注册组件
+  if (showRegister) {
+    return <Register onSwitchToLogin={() => setShowRegister(false)} />;
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="bg-white rounded-xl shadow-soft px-10 py-6 w-full max-w-sm relative">
-        <img className="w-26 mx-auto rounded-full" src={logoImg} alt="Logo" />
+      <div className="bg-white rounded-xl shadow-soft px-10 py-8 w-full max-w-sm relative">
+        <div className='flex items-center justify-center gap-1'>
+          <img className="w-10" src={logoImg} alt="Logo" />
+          <span className=' font-bold'>oh admin</span>
+        </div>
 
         <div className="space-y-6 mt-6">
           {/* 统一登录表单 */}
@@ -92,7 +102,7 @@ export default function Login() {
                 <Field className="gap-1">
                   <div className="flex items-center gap-2">
                     <FieldLabel className="w-12 shrink-0">账号</FieldLabel>
-                    <Controller name="account" control={control} render={({ field }) => <Input {...field} placeholder="用户名" />} />
+                    <Controller name="account" control={control} render={({ field }) => <Input {...field} placeholder="用户名/邮箱" />} />
                   </div>
                   <div className="min-h-5 text-right">{'account' in errors && errors.account && <FieldError>{errors.account.message}</FieldError>}</div>
                 </Field>
@@ -142,7 +152,12 @@ export default function Login() {
         <div className="mt-5">
           <div className="flex items-center justify-center mb-4">
             <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="px-3 text-sm text-gray-500">登录方式</span>
+            <span className="px-3 text-sm text-gray-500">
+              登录方式 .{' '}
+              <button type="button" onClick={() => setShowRegister(true)} className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                注册
+              </button>
+            </span>
             <div className="flex-1 h-px bg-gray-200"></div>
           </div>
 

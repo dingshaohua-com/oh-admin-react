@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // 集成openApi(swagger)
-  const config = new DocumentBuilder().setTitle('Cats example').setDescription('The cats API description').setVersion('1.0').addTag('cats').build();
+  const config = new DocumentBuilder().setTitle('oh admin').setDescription('一个非常优秀的中后台').setVersion('1.0').addTag('cats').build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
